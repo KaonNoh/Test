@@ -1,0 +1,76 @@
+:root {
+  --navy: #112946;
+  --blue: #2166d1;
+  --ink: #172b45;
+  --muted: #60738a;
+  --line: #dce5ef;
+  --surface: #f5f8fc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: 'DM Sans', 'Work Sans', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Work Sans', sans-serif;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  box-shadow: 0 9px 26px rgba(20, 52, 90, 0.045);
+}
+
+.field {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #ccd8e7;
+  border-radius: 9px;
+  background: #fff;
+  padding: 8px 12px;
+  color: var(--ink);
+}
+
+.field:focus {
+  border-color: var(--blue);
+  outline: 3px solid #2166d128;
+}
+
+button:focus-visible,
+select:focus-visible {
+  outline: 3px solid #70a8fa;
+  outline-offset: 3px;
+}
+
+.metric-value {
+  font-family: 'Work Sans', sans-serif;
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-wrap {
+  position: relative;
+  height: 380px;
+}
+
+.soft-line {
+  background: linear-gradient(90deg, #2166d1, #9ec7ff);
+  height: 3px;
+}
+
+@media (max-width: 640px) {
+  .chart-wrap {
+    height: 310px;
+  }
+}

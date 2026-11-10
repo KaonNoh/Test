@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>평균 회귀 사회 현상 분석 프로그램</title>
+<!-- External Fonts & Libraries -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+<script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+
+<!-- Custom External CSS -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-template-id="__page-root" class="w-full min-h-screen bg-white" style="background: rgb(255, 255, 255);">
+<header data-template-id="site-header" class="canva-header w-full bg-[#112946] text-white" style="background: rgb(17, 41, 70);">
+<div class="mx-auto max-w-7xl px-5 py-7 sm:px-8 sm:py-9">
+<div class="flex flex-wrap items-start justify-between gap-5">
+<div>
+<p data-template-id="header-kicker" class="canva-text mb-2 text-[#a7c9fa] font-semibold tracking-[.16em] uppercase" style="color: rgb(167, 201, 250); font-weight: 700; font-style: normal; font-size: 11px;"></p>
+<h1 data-template-id="app-title" class="canva-text font-bold tracking-tight leading-tight" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 30px;">평균 회귀 사회 현상 분석 프로그램</h1>
+<p data-template-id="app-subtitle" class="canva-text mt-1 text-[#bcd5f5]" style="color: rgb(188, 213, 245); font-weight: 400; font-style: normal; font-size: 16px;">Regression to the Mean Analyzer</p>
+</div>
+<div class="rounded-lg border border-white/20 px-3 py-2 text-[#d5e7ff] text-sm"><span data-template-id="header-badge" class="canva-tag" style="color: rgb(213, 231, 255); font-weight: 400; font-style: normal; font-size: 14px;">2026 두레곽 이공심포지엄</span>
+</div>
+</div>
+</div>
+</header>
+<main class="mx-auto w-full max-w-7xl px-5 pb-14 pt-8 sm:px-8">
+<section aria-labelledby="intro-title" class="mb-7 flex flex-wrap items-end justify-between gap-5">
+<div>
+<h2 id="intro-title" data-template-id="intro-heading" class="canva-text font-bold text-[#172b45]" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">데이터 분석 워크스페이스</h2>
+<p data-template-id="intro-description" class="canva-text mt-2 text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 15px;">실제 데이터를 입력하고 평균 회귀 현상을 분석해 보세요.</p>
+</div>
+<div class="w-full sm:w-52"><label data-template-id="category-label" class="canva-text mb-2 block font-semibold" for="category" style="color: rgb(23, 43, 69); font-weight: 600; font-style: normal; font-size: 15px;">분석 분야</label> <select id="category" class="field cursor-pointer" aria-label="분석 분야"> <option value="교육" selected="">교육</option> <option value="의료">의료</option> <option value="화학">화학</option> <option value="사회현상">사회현상</option> </select>
+</div>
+</section>
+<div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.38fr)_minmax(310px,.85fr)]">
+<section data-template-id="input-panel" aria-labelledby="input-heading" class="canva-panel panel min-w-0 overflow-hidden rounded-2xl bg-white" style="background: rgb(255, 255, 255);">
+<div class="soft-line"></div>
+<div class="p-5 sm:p-6">
+<div class="mb-5 flex flex-wrap items-start justify-between gap-3">
+<div>
+<p data-template-id="input-eyebrow" class="canva-text mb-1 font-bold text-[#2166d1] tracking-widest" style="color: rgb(33, 102, 209); font-weight: 700; font-style: normal; font-size: 11px;">01 / DATA INPUT</p>
+<h2 id="input-heading" data-template-id="input-heading-text" class="canva-text font-bold" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">측정 데이터 입력</h2>
+<p data-template-id="input-helper" class="canva-text mt-1 text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 15px;">같은 사람의 두 시점 측정값을 한 행에 입력하세요.</p>
+</div><span id="row-count" class="rounded-full bg-[#edf4ff] px-3 py-1 text-sm font-semibold text-[#2166d1]" aria-live="polite">3명</span>
+</div>
+<div class="overflow-x-auto rounded-xl border border-[#dce5ef]">
+<table class="w-full min-w-[460px] border-collapse text-left">
+<thead class="bg-[#f5f8fc] text-sm">
+<tr>
+<th data-template-id="column-person" class="canva-text w-20 px-4 py-3 font-semibold text-[#60738a]" scope="col" style="color: rgb(96, 115, 138); font-weight: 600; font-style: normal; font-size: 15px;">대상자</th>
+<th data-template-id="column-first" class="canva-text px-3 py-3 font-semibold text-[#60738a]" scope="col" style="color: rgb(96, 115, 138); font-weight: 600; font-style: normal; font-size: 15px;">첫 번째 측정값 (X)</th>
+<th data-template-id="column-second" class="canva-text px-3 py-3 font-semibold text-[#60738a]" scope="col" style="color: rgb(96, 115, 138); font-weight: 600; font-style: normal; font-size: 15px;">두 번째 측정값 (Y)</th>
+<th data-template-id="column-action" class="canva-text w-16 px-3 py-3 font-semibold text-[#60738a]" scope="col" style="color: rgb(96, 115, 138); font-weight: 600; font-style: normal; font-size: 15px;">삭제</th>
+</tr>
+</thead>
+<tbody id="data-rows" class="divide-y divide-[#e7edf5]"></tbody>
+</table>
+</div><button id="add-row" type="button" data-template-id="add-row-button" class="canva-button mt-4 rounded-lg border border-[#b9cfee] bg-white px-4 py-2 font-semibold text-[#2166d1] transition hover:bg-[#edf4ff]" style="background: rgb(255, 255, 255); color: rgb(33, 102, 209); font-weight: 600; font-style: normal; font-size: 15px;">+ 데이터 행 추가</button>
+<div class="my-6 border-t border-[#e7edf5]"></div>
+<div class="grid gap-4 sm:grid-cols-2">
+<div><label data-template-id="target-label" for="target-first" class="canva-text mb-2 block font-semibold" style="color: rgb(23, 43, 69); font-weight: 600; font-style: normal; font-size: 15px;">분석 대상자의 첫 번째 측정값</label> <input id="target-first" class="field numeric" type="number" step="any" inputmode="decimal" value="92">
+</div>
+<div><label data-template-id="actual-label" for="target-actual" class="canva-text mb-2 block font-semibold" style="color: rgb(23, 43, 69); font-weight: 600;">실제 두 번째 측정값 <span class="font-normal text-[#60738a]">(선택)</span></label> <input id="target-actual" class="field numeric" type="number" step="any" inputmode="decimal" placeholder="실제값을 알고 있다면 입력">
+</div>
+</div>
+<p data-template-id="sample-note" class="canva-text mt-3 text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 13px;">예시값이 입력되어 있습니다. 자신의 데이터로 바꾸어 분석해 보세요.</p>
+<div class="mt-6 flex flex-wrap items-center gap-4"><button id="analyze" type="button" data-template-id="analyze-button" class="canva-button rounded-lg bg-[#2166d1] px-6 py-3 font-bold text-white shadow-sm transition hover:bg-[#174ea6]" style="background: rgb(33, 102, 209); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 15px;">데이터 분석하기 →</button>
+<p id="message" role="status" aria-live="polite" class="min-h-6 text-sm font-medium text-[#a43c38]"></p>
+</div>
+</div>
+</section>
+<section data-template-id="summary-panel" aria-labelledby="summary-heading" class="canva-panel panel min-w-0 overflow-hidden rounded-2xl bg-white" style="background: rgb(255, 255, 255);">
+<div class="soft-line"></div>
+<div class="p-5 sm:p-6">
+<p data-template-id="summary-eyebrow" class="canva-text mb-1 font-bold text-[#2166d1] tracking-widest" style="color: rgb(33, 102, 209); font-weight: 700; font-style: normal; font-size: 11px;">02 / SUMMARY</p>
+<div id="summary-heading" aria-live="polite">
+<h2 data-template-id="summary-heading-education" class="canva-text font-bold" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">교육 분석 결과</h2>
+<h2 data-template-id="summary-heading-medical" class="canva-text hidden font-bold" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">의료 분석 결과</h2>
+<h2 data-template-id="summary-heading-chemistry" class="canva-text hidden font-bold" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">화학 분석 결과</h2>
+<h2 data-template-id="summary-heading-social" class="canva-text hidden font-bold" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">사회현상 분석 결과</h2>
+</div>
+<p id="result-context" class="mt-1 text-sm text-[#60738a]" aria-live="polite">교육 · 분석 전</p>
+<div class="mt-5 grid grid-cols-2 gap-3">
+<article class="rounded-xl border border-[#dce5ef] bg-[#f7faff] p-4">
+<h3 data-template-id="mean-first-label" class="canva-text text-[#60738a] font-medium" style="color: rgb(96, 115, 138); font-weight: 500; font-style: normal; font-size: 18px;">첫 번째 시점 평균</h3>
+<p id="mean-first" class="metric-value mt-2 text-[#112946]">—</p>
+</article>
+<article class="rounded-xl border border-[#dce5ef] bg-[#f7faff] p-4">
+<h3 data-template-id="mean-second-label" class="canva-text text-[#60738a] font-medium" style="color: rgb(96, 115, 138); font-weight: 500; font-style: normal; font-size: 18px;">두 번째 시점 평균</h3>
+<p id="mean-second" class="metric-value mt-2 text-[#112946]">—</p>
+</article>
+<article class="rounded-xl border border-[#dce5ef] bg-[#f7faff] p-4">
+<h3 data-template-id="sd-first-label" class="canva-text text-[#60738a] font-medium" style="color: rgb(96, 115, 138); font-weight: 500; font-style: normal; font-size: 18px;">첫 번째 시점 표준편차</h3>
+<p id="sd-first" class="metric-value mt-2 text-[#112946]">—</p>
+</article>
+<article class="rounded-xl border border-[#dce5ef] bg-[#f7faff] p-4">
+<h3 data-template-id="sd-second-label" class="canva-text text-[#60738a] font-medium" style="color: rgb(96, 115, 138); font-weight: 500; font-style: normal; font-size: 18px;">두 번째 시점 표준편차</h3>
+<p id="sd-second" class="metric-value mt-2 text-[#112946]">—</p>
+</article>
+<article class="col-span-2 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#bdd4f8] bg-[#edf4ff] p-4">
+<h3 data-template-id="correlation-label" class="canva-text text-[#284d80] font-semibold" style="color: rgb(40, 77, 128); font-weight: 600; font-style: normal; font-size: 18px;">두 측정값의 상관계수 · r</h3>
+<p id="correlation" class="metric-value text-[#2166d1]">—</p>
+</article>
+</div>
+<p data-template-id="sd-note" class="canva-text mt-4 text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 13px;">표준편차는 입력한 집단의 모집단 표준편차입니다.</p>
+</div>
+</section>
+</div>
+<section data-template-id="prediction-panel" aria-labelledby="prediction-heading" class="canva-panel panel mt-6 overflow-hidden rounded-2xl bg-[#112946] p-5 text-white sm:p-6" style="background: rgb(17, 41, 70);">
+<p data-template-id="prediction-eyebrow" class="canva-text mb-1 font-bold text-[#a7c9fa] tracking-widest" style="color: rgb(167, 201, 250); font-weight: 700; font-style: normal; font-size: 11px;">03 / PREDICTION</p>
+<h2 id="prediction-heading" data-template-id="prediction-heading-text" class="canva-text font-bold text-white" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 23px;">평균 회귀 예측</h2>
+<div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+<article class="rounded-xl border border-white/15 bg-white/10 p-4">
+<h3 data-template-id="target-result-label" class="canva-text text-[#c5d8f2]" style="color: rgb(197, 216, 242); font-weight: 400; font-style: normal; font-size: 18px;">대상자 첫 번째 측정값</h3>
+<p id="target-result" class="metric-value mt-2">—</p>
+</article>
+<article class="rounded-xl border border-[#88b7ff]/50 bg-[#2166d1] p-4">
+<h3 data-template-id="predicted-label" class="canva-text text-white" style="color: rgb(255, 255, 255); font-weight: 400; font-style: normal; font-size: 18px;">두 번째 측정값 예측</h3>
+<p id="predicted-result" class="metric-value mt-2">—</p>
+</article>
+<article class="rounded-xl border border-white/15 bg-white/10 p-4">
+<h3 data-template-id="slope-label" class="canva-text text-[#c5d8f2]" style="color: rgb(197, 216, 242); font-weight: 400; font-style: normal; font-size: 18px;">회귀 직선의 기울기</h3>
+<p id="slope-result" class="metric-value mt-2">—</p>
+</article>
+<article class="rounded-xl border border-white/15 bg-white/10 p-4">
+<h3 data-template-id="distance-label" class="canva-text text-[#c5d8f2]" style="color: rgb(197, 216, 242); font-weight: 400; font-style: normal; font-size: 18px;">집단 평균과의 거리 변화</h3>
+<p id="distance-result" class="mt-2 text-lg font-bold numeric">—</p>
+</article>
+</div>
+<div class="mt-4 rounded-xl border border-white/15 bg-white/10 p-4">
+<h3 data-template-id="interpretation-label" class="canva-text font-semibold text-[#c5d8f2]" style="color: rgb(197, 216, 242); font-weight: 600; font-style: normal; font-size: 18px;">평균 회귀 여부</h3>
+<p id="interpretation" class="mt-2 font-medium leading-relaxed" aria-live="polite">데이터를 분석하면 결과가 표시됩니다.</p>
+</div>
+</section>
+<div class="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,.7fr)]">
+<section data-template-id="chart-panel" aria-labelledby="chart-heading" class="canva-panel panel min-w-0 rounded-2xl bg-white p-5 sm:p-6" style="background: rgb(255, 255, 255);">
+<p data-template-id="chart-eyebrow" class="canva-text mb-1 font-bold text-[#2166d1] tracking-widest" style="color: rgb(33, 102, 209); font-weight: 700; font-style: normal; font-size: 11px;">04 / VISUALIZATION</p>
+<h2 id="chart-heading" data-template-id="chart-heading-text" class="canva-text font-bold" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">측정값 관계와 회귀 직선</h2>
+<p data-template-id="chart-description" class="canva-text mt-1 text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 15px;">점은 집단 데이터, ◆는 예측값, ▲는 실제값을 나타냅니다.</p>
+<div class="chart-wrap mt-5">
+<canvas id="analysis-chart" role="img" aria-label="측정값 산점도와 회귀 직선 및 평균 기준선"></canvas>
+</div>
+</section>
+<section data-template-id="comparison-panel" aria-labelledby="comparison-heading" class="canva-panel panel rounded-2xl bg-white p-5 sm:p-6" style="background: rgb(255, 255, 255);">
+<p data-template-id="comparison-eyebrow" class="canva-text mb-1 font-bold text-[#2166d1] tracking-widest" style="color: rgb(33, 102, 209); font-weight: 700; font-style: normal; font-size: 11px;">05 / COMPARISON</p>
+<h2 id="comparison-heading" data-template-id="comparison-heading-text" class="canva-text font-bold" style="color: rgb(23, 43, 69); font-weight: 700; font-style: normal; font-size: 23px;">실제값 비교</h2>
+<p data-template-id="comparison-description" class="canva-text mt-1 text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 15px;">실제값을 입력하고 다시 분석하면 예측과 비교할 수 있습니다.</p>
+<dl class="mt-5 divide-y divide-[#e7edf5]">
+<div class="flex justify-between gap-3 py-4">
+<dt data-template-id="comparison-predicted-label" class="canva-text text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 15px;">예측값</dt>
+<dd id="comparison-predicted" class="numeric font-bold">—</dd>
+</div>
+<div class="flex justify-between gap-3 py-4">
+<dt data-template-id="comparison-actual-label" class="canva-text text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 15px;">실제값</dt>
+<dd id="comparison-actual" class="numeric font-bold">—</dd>
+</div>
+<div class="flex justify-between gap-3 py-4">
+<dt data-template-id="comparison-error-label" class="canva-text text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 15px;">예측 오차 · 실제값 − 예측값</dt>
+<dd id="comparison-error" class="numeric font-bold text-[#2166d1]">—</dd>
+</div>
+</dl>
+</section>
+</div>
+<aside data-template-id="limitations-panel" class="canva-panel mt-6 rounded-xl border border-[#dce5ef] bg-[#f5f8fc] p-5" aria-labelledby="limitations-heading" style="background: rgb(245, 248, 252);">
+<h2 id="limitations-heading" data-template-id="limitations-heading-text" class="canva-text font-bold text-[#112946]" style="color: rgb(17, 41, 70); font-weight: 700; font-style: normal; font-size: 23px;">분석의 한계</h2>
+<p data-template-id="limitations-text" class="canva-text mt-2 leading-relaxed text-[#52657c]" style="color: rgb(82, 101, 124); font-weight: 400; font-style: normal; font-size: 15px;">평균 회귀는 통계적인 예측 현상이며, 예측된 수치 변화가 치료나 교육 등의 효과를 직접적으로 증명하는 것은 아닙니다.</p>
+</aside>
+</main>
+<footer class="w-full border-t border-[#e7edf5] px-5 py-5 text-center">
+<p data-template-id="footer-text" class="canva-footer text-[#60738a]" style="color: rgb(96, 115, 138); font-weight: 400; font-style: normal; font-size: 13px;">Regression to the Mean Analyzer · 통계 탐구 도구</p>
+</footer>
+<template id="row-template">
+<tr class="data-row">
+<th class="row-index px-4 py-3 text-sm font-semibold text-[#60738a]" scope="row"></th>
+<td class="px-3 py-2"><label class="sr-only first-label"></label><input class="field row-first numeric" type="number" step="any" inputmode="decimal"></td>
+<td class="px-3 py-2"><label class="sr-only second-label"></label><input class="field row-second numeric" type="number" step="any" inputmode="decimal"></td>
+<td class="px-3 py-2"><button type="button" data-template-id="delete-row-button" class="canva-button row-delete rounded-lg px-2 py-2 font-semibold text-[#a43c38] hover:bg-[#fff0ee]" aria-label="이 행 삭제">삭제</button></td>
+</tr>
+</template>
+
+<!-- Custom External JS -->
+<script src="script.js"></script>
+</body>
+</html>
